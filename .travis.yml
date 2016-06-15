@@ -22,6 +22,10 @@ addons:
       - bison
       - flex
       - texinfo
+  artifacts:
+    s3_region: "us-west-2"
+    paths:
+      - $(ls /home/travis/riscv-tools-*.tar.gz)
 
 env:
   global:
@@ -42,4 +46,6 @@ before_install:
 # extra time duing long builds
 install: travis_wait
 
-script: ./build.sh
+script:
+  - ./build.sh
+  - tar -C /home/travis/riscv_install -c . | gzip > /home/travis/riscv-tools-$TRAVIS_COMMIT.tar.gz
