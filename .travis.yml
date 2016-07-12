@@ -26,6 +26,10 @@ addons:
 env:
   global:
     - RISCV="/home/travis/riscv_install"
+    - MAKEFLAGS="-j3"
+  matrix:
+    - XLEN=32
+    - XLEN=64
 
 before_install:
   # make install destination
@@ -36,10 +40,8 @@ before_install:
   - cd ..
   # actually use new gcc
   - export CXX=g++-4.8 CC=gcc-4.8
-  # only have 2 cores on the travis machine
-  - sed -i.bak 's/JOBS=16/JOBS=8/' build.common
 
 # extra time duing long builds
 install: travis_wait
 
-script: ./build.sh
+script: ./build.sh --with-xlen=$XLEN
